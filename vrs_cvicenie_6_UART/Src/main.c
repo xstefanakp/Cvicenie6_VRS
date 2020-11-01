@@ -92,25 +92,30 @@ void SystemClock_Config(void)
 
 void process_serial_data(uint8_t ch)
 {
-	static uint8_t count = 0;
+	
+	static char text [6] = "";
 
-	if(ch == 'a')
+
+	text [0] = text [1];
+	text [1] = text [2];
+	text [2] = text [3];
+	text [3] = text [4];
+	text [4] = text [5];
+	text [5] = ch;
+
+
+	if(text[0] == 'l' && text[1] == 'e' && text[2] == 'd' && text[3] == 'o' && text[4] == 'f' && text[5] == 'f')
 	{
-		count++;
-
-		if(count >= 3)
-		{
-			if((LL_GPIO_ReadInputPort(GPIOB) & (1 << 3)) >> 3)
-			{
-				LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_3);
-			}
-			else
-			{
-				LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_3);
-			}
-
-			count = 0;
-			return;
+		LL_GPIO_ResetOutputPin(GPIOB, LL_GPIO_PIN_3);
+		for(int i = 0; i < 6; i++){
+			text[i]=' ';
+		}
+	}
+	else if( (text[0] == 'l' && text[1] == 'e' && text[2] == 'd' && text[3] == 'o' && text[4] == 'n') || (text[1] == 'l' && text[2] == 'e' && text[3] == 'd' && text[4] == 'o' && text[5] == 'n')  )
+	{
+		LL_GPIO_SetOutputPin(GPIOB, LL_GPIO_PIN_3);
+		for(int i = 0; i < 6; i++){
+			text[i]=' ';
 		}
 	}
 }
