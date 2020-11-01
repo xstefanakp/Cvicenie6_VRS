@@ -1,0 +1,1 @@
+# Cvicenie6_VRS
