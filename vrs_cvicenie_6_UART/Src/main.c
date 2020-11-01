@@ -43,16 +43,30 @@ int main(void)
 
   USART2_RegisterCallback(process_serial_data);
 
-  char tx_data = 'a';
+	char LedOn[6] = "ON ";
+	char LedOff[7] = "OFF ";
 
   while (1)
   {
-	  LL_USART_TransmitData8(USART2, tx_data++);
-	  tx_data == ('z' + 1) ? tx_data = 'a' : tx_data;
+	  if((LL_GPIO_ReadInputPort(GPIOB) & (1 << 3)) >> 3){
 
-	  LL_mDelay(50);
-  }
+
+	  			for(int i = 0; i < 4; i++){
+	  				LL_USART_TransmitData8(USART2, LedOn[i]);
+	  				LL_mDelay(50);
+	  			}
+
+	  		}else{
+	  			for(int i = 0; i < 5; i++){
+	  				LL_USART_TransmitData8(USART2, LedOff[i]);
+	  				LL_mDelay(50);
+	  			}
+	  		}
+	  		LL_mDelay(1000);
+	  	}
+
 }
+
 
 /**
   * @brief System Clock Configuration
